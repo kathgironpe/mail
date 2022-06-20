@@ -39,6 +39,7 @@ gem 'bootsnap', require: false
 # Generate documentation for the API
 gem 'apipie-rails'
 gem 'batch-loader'
+gem 'bullet'
 gem 'securerandom'
 
 group :development do

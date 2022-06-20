@@ -22,7 +22,7 @@ class Mailing < ApplicationRecord
   validates :subject, presence: true
 
   def self.get_mailings(id)
-    Mailing.joins(store: :subscribers).select('subscribers.*, mailings.*').where(id: id).try(:first)
+    Mailing.includes(:store).where(id: id).try(:first)
   end
 
   def subscribers
