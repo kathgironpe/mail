@@ -33,4 +33,8 @@ class Subscriber < ApplicationRecord
 
     order.last.try(:total).try(:to_i)
   end
+
+  def store_name
+    store.name
+  end
 end

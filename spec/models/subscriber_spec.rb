@@ -55,4 +55,12 @@ describe Subscriber, type: :model do
       end
     end
   end
+
+  describe '#store_name' do
+    subject(:subscriber) { create(:subscriber) }
+
+    it 'should return store name' do
+      expect(subscriber.store_name).to eq(subscriber.store_name)
+    end
+  end
 end
