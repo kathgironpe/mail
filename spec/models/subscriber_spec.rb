@@ -30,11 +30,11 @@ describe Subscriber, type: :model do
     it { should validate_presence_of(:last_name) }
   end
 
-  describe '#name' do
+  describe '#subscriber_full_name' do
     subject(:subscriber) { create(:subscriber) }
 
     it 'should return the full name' do
-      expect(subscriber.full_name).to eq("#{subscriber.first_name} #{subscriber.last_name}")
+      expect(subscriber.subscriber_full_name).to eq("#{subscriber.first_name} #{subscriber.last_name}")
     end
   end
 

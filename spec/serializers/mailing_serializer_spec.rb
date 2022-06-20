@@ -34,7 +34,7 @@ describe MailingSerializer do
       )
 
       expect(recipient_variables).to include(
-        { subscriber_full_name: recipient.full_name }
+        { subscriber_full_name: recipient.subscriber_full_name }
       )
 
       expect(recipient_variables).to include(

@@ -59,13 +59,10 @@ class MailingSerializer
     html = @mailing.html
     vars_with_fallback = html.scan(/{{*\s*[a-zA-Z0-9_ ]*\s*\|*\s*fallback:*\s*'.*?'*\s*}}/).to_a
     vars = {}
-    val = ''
     vars_with_fallback.each do |var|
       variable_name = variable_name(var)
       fallback_value = fallback(var)
-      total = variable_name.match('last_order_amount') && subscriber.last_order_amount
-      name = variable_name.match('subscriber_full_name') && subscriber.full_name
-      val = total || name
+      val = subscriber.send(variable_name)
       vars.merge!({ "#{variable_name}": val || fallback_value })
     end
     vars
