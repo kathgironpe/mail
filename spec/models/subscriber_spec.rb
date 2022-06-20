@@ -37,4 +37,22 @@ describe Subscriber, type: :model do
       expect(subscriber.full_name).to eq("#{subscriber.first_name} #{subscriber.last_name}")
     end
   end
+
+  describe '#last_order_amount' do
+    let(:subscriber) { create(:subscriber) }
+
+    context 'when subscriber has orders' do
+      let!(:order) { create(:order, subscriber_uid: subscriber.uid) }
+
+      it 'should return last_order_amount' do
+        expect(subscriber.last_order_amount).to eq(order.total)
+      end
+    end
+
+    context 'when subscriber has no orders' do
+      it 'should return last_order_amount' do
+        expect(subscriber.last_order_amount).to eq(nil)
+      end
+    end
+  end
 end

@@ -31,6 +31,6 @@ class Subscriber < ApplicationRecord
   def last_order_amount
     order = Order.where(subscriber_uid: uid).order('created_at DESC')
 
-    order.last.try(:total).try(:to_i) || 0
+    order.last.try(:total).try(:to_i)
   end
 end
