@@ -63,9 +63,10 @@ class MailingSerializer
     vars_with_fallback.each do |var|
       variable_name = variable_name(var)
       fallback_value = fallback(var)
-      val = variable_name.match('last_order_amount') && subscriber.last_order_amount.to_s || fallback_value
-      val = variable_name.match('subscriber_full_name') && subscriber.full_name || fallback_value
-      vars.merge!({ "#{variable_name}": val.to_s })
+      total = variable_name.match('last_order_amount') && subscriber.last_order_amount
+      name = variable_name.match('subscriber_full_name') && subscriber.full_name
+      val = total || name
+      vars.merge!({ "#{variable_name}": val || fallback_value })
     end
     vars
   end
@@ -76,7 +77,7 @@ class MailingSerializer
   end
 
   def fallback(var)
-    fallback = var.match(/\'+[a-zA-Z0-9_ ]*.+'/)
+    fallback = var.match(/'+[a-zA-Z0-9_ ]*.+'/)
     fallback.to_s.gsub(/[^a-zA-Z0-9_]/, '')
   end
 end

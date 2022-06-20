@@ -39,7 +39,7 @@ describe MailingSerializer do
 
       expect(recipient_variables).to include(
         {
-          last_order_amount: 0.to_s
+          last_order_amount: recipient.last_order_amount
         }
       )
     end
