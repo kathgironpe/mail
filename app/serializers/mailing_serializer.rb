@@ -18,6 +18,8 @@ class MailingSerializer
     }
   end
 
+  private
+
   def all_recipient_variables
     recipient_vars = {}
     subscribers = @mailing.subscribers
@@ -30,8 +32,8 @@ class MailingSerializer
   end
 
   def subscribers_info(subscriber)
-    subscriber_hash = { name: subscriber.full_name.to_s }
-    subscriber_hash.merge!(html_vars_with_fallback)
+    subscriber_hash = { name: subscriber.first_name.to_s }
+    subscriber_hash.merge!(html_vars_with_fallback(subscriber))
     subscriber_hash.merge!(html_vars)
 
     {
@@ -41,25 +43,29 @@ class MailingSerializer
 
   def html_vars
     html = @mailing.html
+    store = @mailing.store
+
     vars_without_fallback = html.scan(/{{*\s*[a-zA-Z0-9_ ]*\s*\|*\s?*}}/).to_a
     vars = {}
     vars_without_fallback.each do |var|
       var = var.to_s.gsub(/[^a-zA-Z0-9_]/, '')
 
-      vars.merge!({ "#{var}": "" })
+      var.match('store_name') && vars.merge!({ store_name: store.name })
     end
     vars
   end
 
-  def html_vars_with_fallback
+  def html_vars_with_fallback(subscriber)
     html = @mailing.html
     vars_with_fallback = html.scan(/{{*\s*[a-zA-Z0-9_ ]*\s*\|*\s*fallback:*\s*'.*?'*\s*}}/).to_a
     vars = {}
+    val = ''
     vars_with_fallback.each do |var|
       variable_name = variable_name(var)
       fallback_value = fallback(var)
-
-      vars.merge!({ "#{variable_name}": { fallback: fallback_value.to_s } })
+      val = variable_name.match('last_order_amount') && subscriber.last_order_amount.to_s || fallback_value
+      val = variable_name.match('subscriber_full_name') && subscriber.full_name || fallback_value
+      vars.merge!({ "#{variable_name}": val.to_s })
     end
     vars
   end

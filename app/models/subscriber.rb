@@ -27,4 +27,10 @@ class Subscriber < ApplicationRecord
   def full_name
     "#{first_name} #{last_name}"
   end
+
+  def last_order_amount
+    order = Order.where(subscriber_uid: uid).order('created_at DESC')
+
+    order.last.try(:total)
+  end
 end
