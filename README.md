@@ -45,3 +45,14 @@ rake db:seed
 rspec .
 ```
 
+## Start the rails server
+
+```sh
+rails s
+```
+
+## Using `curl` to test the API
+
+```sh
+curl http://localhost:3000/api/campaigns/1
+```
